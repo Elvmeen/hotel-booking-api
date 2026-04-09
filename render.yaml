@@ -3,15 +3,20 @@ services:
     name: hotel-booking-api
     runtime: docker
     plan: free
+    port: 8080
+    healthCheckPath: /
     envVars:
       - key: CI_ENV
         value: production
       - key: DB_HOST
-        sync: false
+        value: aws.connect.psdb.cloud
       - key: DB_USER
         sync: false
       - key: DB_PASS
         sync: false
       - key: DB_NAME
-        sync: false
-    healthCheckPath: /
+        value: hotel_booking
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
