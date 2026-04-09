@@ -1,0 +1,35 @@
+# CodeIgniter system folder (download separately)
+system/
+
+# Environment and configuration
+.env
+application/config/database.php.local
+
+# Logs
+application/logs/*.log
+!application/logs/index.html
+
+# Cache
+application/cache/*
+!application/cache/index.html
+
+# Upload folder
+uploads/*
+!uploads/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Composer
+vendor/
+composer.lock
+
+# Node
+node_modules/

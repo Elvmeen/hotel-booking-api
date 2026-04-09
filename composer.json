@@ -1,0 +1,20 @@
+{
+    "name": "hotel-booking/api",
+    "description": "Hotel Booking REST API built on CodeIgniter 3",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "codeigniter/framework": "3.1.*"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"is_dir('system') || symlink('vendor/codeigniter/framework/system', 'system');\""
+        ]
+    }
+}
