@@ -1,9 +1,10 @@
-# CodeIgniter system folder (download separately)
+# CodeIgniter system folder — installed via Composer (see composer.json)
 system/
+vendor/
 
-# Environment and configuration
+# Environment and local overrides
 .env
-application/config/database.php.local
+application/config/database.local.php
 
 # Logs
 application/logs/*.log
@@ -27,9 +28,6 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# Composer
-vendor/
-composer.lock
-
-# Node
+# Node (not used by this project)
 node_modules/
+package-lock.json
