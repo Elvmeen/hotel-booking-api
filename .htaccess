@@ -10,7 +10,7 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_FILENAME} !-d
 
     # Route everything else through CodeIgniter front controller
-    RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+    RewriteRule ^(.*)$ index.php/$1 [L]
 </IfModule>
 
 # Security headers
