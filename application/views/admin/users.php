@@ -32,7 +32,7 @@
                 <?php else: ?>
                     <?php foreach ($users as $i => $u): ?>
                     <tr>
-                        <td><?= ($page - 1) * 20 + $i + 1 ?></td>
+                        <td><?= ((int)$page - 1) * 20 + $i + 1 ?></td>
                         <td><strong><?= htmlspecialchars($u['name']) ?></strong></td>
                         <td><?= htmlspecialchars($u['email']) ?></td>
                         <td><?= htmlspecialchars($u['phone'] ?? '—') ?></td>
