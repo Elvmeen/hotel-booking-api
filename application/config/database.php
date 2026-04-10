@@ -43,7 +43,7 @@ $db['default'] = array(
     | Required for PlanetScale (and any SSL-only MySQL host).
     */
     'encrypt' => array(
-        'ssl_verify' => TRUE,
+        'ssl_verify' => FALSE,
         'ssl_ca'     => $ca_bundle,
     ),
 
