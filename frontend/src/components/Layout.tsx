@@ -29,6 +29,11 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Link href="/dashboard" className="text-sm font-medium hover:text-accent transition-colors" data-testid="nav-dashboard">
                   My Bookings
                 </Link>
+                {user?.role === "admin" && (
+                  <Link href="/admin" className="text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors" data-testid="nav-admin">
+                    Admin Panel
+                  </Link>
+                )}
                 <div className="flex items-center gap-4 ml-4">
                   <span className="text-sm text-muted-foreground">Welcome, {user?.name}</span>
                   <Button variant="outline" size="sm" onClick={handleLogout} data-testid="nav-logout">
