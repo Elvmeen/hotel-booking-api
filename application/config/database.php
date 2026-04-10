@@ -10,9 +10,8 @@ if (!file_exists($ca_bundle)) {
     $ca_bundle = '/etc/ssl/cert.pem';
 }
 
-// TEMPORARY VERIFICATION: Uncomment the 2 lines below to check env vars are being read.
-// Visit your site, confirm the values print, then comment them out again.
-var_dump(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_NAME'));
+// TEMPORARY VERIFICATION: All 3 env vars confirmed working. Keep commented out.
+// var_dump(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_NAME'));
 // exit;
 
 $db['default'] = array(
@@ -31,7 +30,7 @@ $db['default'] = array(
     'dbcollat'   => 'utf8mb4_unicode_ci',
     'swap_pre'   => '',
     'encrypt'    => array(
-        'ssl_verify' => FALSE,
+        'ssl_verify' => TRUE,
         'ssl_ca'     => $ca_bundle,
     ),
     'compress'     => FALSE,
