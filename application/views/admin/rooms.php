@@ -149,7 +149,7 @@ document.getElementById('room-form').addEventListener('submit', async function(e
     e.preventDefault();
     const id     = document.getElementById('room-id').value;
     const method = id ? 'PUT' : 'POST';
-    const url    = id ? '/api/rooms/' + id : '/api/rooms';
+    const url    = id ? 'https://hotel-booking-api-1-zmcs.onrender.com/api/rooms/' + id : 'https://hotel-booking-api-1-zmcs.onrender.com/api/rooms';
     const token  = localStorage.getItem('admin_token');
 
     const body = {
