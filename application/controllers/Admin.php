@@ -21,6 +21,7 @@ class Admin extends CI_Controller
     // Auth
     // -----------------------------------------------------------------------
 
+    
     public function login(): void
     {
         if ($this->_is_logged_in()) {
@@ -33,34 +34,54 @@ class Admin extends CI_Controller
     {
         $email    = $this->input->post('email');
         $password = $this->input->post('password');
-
+    
         if (empty($email) || empty($password)) {
             $this->session->set_flashdata('error', 'Email and password are required.');
             redirect('admin/login');
         }
-
+    
         $user = $this->User_model->find_by_email(strtolower(trim($email)));
-
+    
         if (!$user || $user['role'] !== 'admin' || !$this->User_model->verify_password($password, $user['password'])) {
             $this->session->set_flashdata('error', 'Invalid credentials or insufficient permissions.');
             redirect('admin/login');
         }
-
+    
         if ($user['status'] !== 'active') {
             $this->session->set_flashdata('error', 'Your account has been suspended.');
             redirect('admin/login');
         }
-
+    
         $this->session->set_userdata([
             'admin_id'    => $user['id'],
             'admin_name'  => $user['name'],
             'admin_email' => $user['email'],
             'admin_role'  => $user['role'],
         ]);
-
+    
+        // Automatically fetch JWT token and store in session
+        $api_url = getenv('APP_URL') ?: 'https://hotel-booking-api-1-zmcs.onrender.com/';
+        $ch = curl_init(rtrim($api_url, '/') . '/api/auth/login');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_POST           => TRUE,
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+            CURLOPT_POSTFIELDS     => json_encode(['email' => $email, 'password' => $password]),
+            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_TIMEOUT        => 10,
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+    
+        $parsed = json_decode($response, TRUE);
+        if (!empty($parsed['data']['token'])) {
+            $this->session->set_userdata('admin_jwt', $parsed['data']['token']);
+        }
+    
         redirect('admin/dashboard');
     }
-
+    
+    
     public function logout_action(): void
     {
         $this->session->unset_userdata(['admin_id', 'admin_name', 'admin_email', 'admin_role']);
