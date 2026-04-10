@@ -22,4 +22,8 @@ $db['default'] = array(
     'stricton' => FALSE,
     'failover' => array(),
     'save_queries' => FALSE,
+    'options'  => array(
+        PDO::MYSQL_ATTR_SSL_CA           => '/etc/ssl/certs/ca-certificates.crt',
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => FALSE,
+    ),
 );
