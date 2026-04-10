@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://hotel-booking-api-1-zmcs.onrender.com';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://hotel-booking-api-1-zmcs.onrender.com';
 
 const TOKEN_KEY = 'hotel_token';
 

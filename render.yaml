@@ -20,3 +20,14 @@ services:
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
+
+  - type: web
+    name: hotel-booking-frontend
+    env: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://hotel-booking-api-1-zmcs.onrender.com
