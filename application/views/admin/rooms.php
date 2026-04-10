@@ -34,7 +34,7 @@
                 <?php else: ?>
                     <?php foreach ($rooms as $i => $r): ?>
                     <tr>
-                        <td><?= ($page - 1) * 20 + $i + 1 ?></td>
+                        <td><?= ((int)$page - 1) * 20 + $i + 1 ?></td>
                         <td><strong><?= htmlspecialchars($r['room_number']) ?></strong></td>
                         <td><?= ucfirst(htmlspecialchars($r['type'])) ?></td>
                         <td><?= $r['floor'] ?></td>
