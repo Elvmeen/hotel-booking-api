@@ -22,11 +22,7 @@ if (!file_exists($ca_bundle)) {
 }
 
 $db['default'] = array(
-    'dsn'      => '',
-    'hostname' => getenv('DB_HOST') ?: 'aws.connect.psdb.cloud',
-    'username' => getenv('DB_USER') ?: '',
-    'password' => getenv('DB_PASS') ?: '',
-    'database' => getenv('DB_NAME') ?: 'hotel_booking',
+    'dsn' => 'mysqli:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME') . ';charset=utf8mb4',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => FALSE,
