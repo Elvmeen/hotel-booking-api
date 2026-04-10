@@ -8,7 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Leave blank — CodeIgniter auto-detects the URL.
 | This works correctly on Render, localhost, and any other host.
 */
-$config['base_url'] = '';
+
+$config['base_url'] = getenv('APP_URL') ?: 'https://hotel-booking-api-1-zmcs.onrender.com/';
 
 $config['index_page'] = '';
 
