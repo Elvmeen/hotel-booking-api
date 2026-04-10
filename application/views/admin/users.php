@@ -68,7 +68,7 @@
 async function toggleUser(id, newStatus) {
     if (!confirm('Set user status to "' + newStatus + '"?')) return;
     const token = localStorage.getItem('admin_token');
-    const res = await fetch('/api/users/' + id, {
+    const res = await fetch('https://hotel-booking-api-1-zmcs.onrender.com/api/users/' + id, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ status: newStatus }),
