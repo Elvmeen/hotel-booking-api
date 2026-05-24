@@ -59,24 +59,9 @@ class Admin extends CI_Controller
             'admin_role'  => $user['role'],
         ]);
 
-        // Fetch JWT token and store in session for API calls
-        $api_url = getenv('APP_URL') ?: 'https://hotel-booking-api-1-zmcs.onrender.com/';
-        $ch = curl_init(rtrim($api_url, '/') . '/api/v1/auth/login');
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_POST           => TRUE,
-            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
-            CURLOPT_POSTFIELDS     => json_encode(['email' => $email, 'password' => $password]),
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_TIMEOUT        => 10,
-        ]);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $parsed = json_decode($response, TRUE);
-        if (!empty($parsed['data']['token'])) {
-            $this->session->set_userdata('admin_jwt', $parsed['data']['token']);
-        }
+        // Generate token directly without HTTP round-trip
+        $token = $this->User_model->generate_token($user['id']);
+        var_dump($token); exit;
 
         redirect('admin/dashboard');
     }
