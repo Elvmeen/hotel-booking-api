@@ -48,8 +48,11 @@
 <script src="<?= base_url('assets/js/admin.js') ?>"></script>
 <?php if ($jwt = $this->session->userdata('admin_jwt')): ?>
 <script>
-    localStorage.setItem('admin_token', '<?= addslashes($jwt) ?>');
+localStorage.setItem('admin_token', '<?= $jwt ?>');
 </script>
 <?php endif; ?>
+    
+
+    
 </body>
 </html>
