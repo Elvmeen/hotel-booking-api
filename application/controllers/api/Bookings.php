@@ -86,7 +86,7 @@ class Bookings extends Base_api
         }
 
         $room = $this->Room_model->find((int) $data['room_id']);
-        if (!$room || $room['status'] !== 'active') {
+        if (!$room || $room['status'] !== 'available') {
             $this->respond_error('Room is not available');
         }
 
