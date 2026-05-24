@@ -32,6 +32,7 @@ $db['default'] = array(
     'password' => 'Alameenu@1234567',            // Set during project creation
     'database' => 'postgres',                                 // Always 'postgres' on Supabase
     'port'     => '5432',                                     // Direct connection port
+    'dbdriver' => 'postgre',
 
     // -------------------------------------------------------
     // Supabase uses PostgreSQL -- use the 'postgre' driver
