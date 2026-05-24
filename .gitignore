@@ -1,33 +1,41 @@
-# CodeIgniter system folder — installed via Composer (see composer.json)
-system/
-vendor/
+# CodeIgniter
+  system/
+  vendor/
 
-# Environment and local overrides
-.env
-application/config/database.local.php
+  # Environment
+  .env
+  application/config/database.local.php
 
-# Logs
-application/logs/*.log
-!application/logs/index.html
+  # Logs
+  application/logs/*.log
+  !application/logs/index.html
 
-# Cache
-application/cache/*
-!application/cache/index.html
+  # Cache
+  application/cache/*
+  !application/cache/index.html
 
-# Upload folder
-uploads/*
-!uploads/.gitkeep
+  # Uploads
+  uploads/*
+  !uploads/.gitkeep
 
-# OS files
-.DS_Store
-Thumbs.db
+  # OS
+  .DS_Store
+  Thumbs.db
 
-# IDE files
-.idea/
-.vscode/
-*.sublime-project
-*.sublime-workspace
+  # IDE
+  .idea/
+  .vscode/
+  *.sublime-project
+  *.sublime-workspace
 
-# Node (not used by this project)
-node_modules/
-package-lock.json
+  # Node / frontend build output
+  node_modules/
+  package-lock.json
+  dist/
+  tmp/
+  *.tsbuildinfo
+
+  # Replit
+  .cache/
+  .local/
+  
