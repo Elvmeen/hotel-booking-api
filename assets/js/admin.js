@@ -68,7 +68,8 @@ document.addEventListener('keydown', (e) => {
                 padding:6px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Dismiss</button>
         `;
         document.body.appendChild(banner);
-    }  300);
+    }   
+    },  300);
 })();
 
 function saveToken() {
