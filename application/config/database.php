@@ -29,7 +29,7 @@ $db['default'] = array(
 
     'hostname' => 'db.gjvrebzljhwaheydcbol.supabase.co',   // Your project host
     'username' => 'postgres',                                 // Always 'postgres' on Supabase
-    'password' => 'Password@123',            // Set during project creation
+    'password' => 'Alameenu@1234567',            // Set during project creation
     'database' => 'postgres',                                 // Always 'postgres' on Supabase
     'port'     => '5432',                                     // Direct connection port
 
