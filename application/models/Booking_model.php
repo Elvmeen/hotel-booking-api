@@ -13,10 +13,11 @@ class Booking_model extends CI_Model
     {
         $offset = ($page - 1) * $per_page;
 
-        $this->db->select('b.*, u.name AS guest_name, u.email AS guest_email, r.room_number, r.type AS room_type, r.price_per_night');
+        $this->db->select('b.*, u.name AS guest_name, u.email AS guest_email, r.room_number, rt.name AS room_type, rt.base_price AS price_per_night');
         $this->db->from($this->table . ' b');
-        $this->db->join('users u',  'u.id = b.user_id',  'left');
-        $this->db->join('rooms r',  'r.id = b.room_id',  'left');
+        $this->db->join('users u',      'u.id = b.user_id',    'left');
+        $this->db->join('rooms r',      'r.id = b.room_id',    'left');
+        $this->db->join('room_types rt','rt.id = r.room_type_id', 'left');
 
         $this->_apply_filters($filters);
 
@@ -28,8 +29,9 @@ class Booking_model extends CI_Model
     public function count(array $filters = []): int
     {
         $this->db->from($this->table . ' b');
-        $this->db->join('users u', 'u.id = b.user_id', 'left');
-        $this->db->join('rooms r', 'r.id = b.room_id', 'left');
+        $this->db->join('users u',      'u.id = b.user_id',    'left');
+        $this->db->join('rooms r',      'r.id = b.room_id',    'left');
+        $this->db->join('room_types rt','rt.id = r.room_type_id', 'left');
         $this->_apply_filters($filters);
         return $this->db->count_all_results();
     }
@@ -37,10 +39,11 @@ class Booking_model extends CI_Model
     public function find(int $id): ?array
     {
         $row = $this->db
-            ->select('b.*, u.name AS guest_name, u.email AS guest_email, r.room_number, r.type AS room_type, r.price_per_night')
+            ->select('b.*, u.name AS guest_name, u.email AS guest_email, r.room_number, rt.name AS room_type, rt.base_price AS price_per_night')
             ->from($this->table . ' b')
-            ->join('users u', 'u.id = b.user_id', 'left')
-            ->join('rooms r', 'r.id = b.room_id', 'left')
+            ->join('users u',      'u.id = b.user_id',       'left')
+            ->join('rooms r',      'r.id = b.room_id',       'left')
+            ->join('room_types rt','rt.id = r.room_type_id', 'left')
             ->where('b.id', $id)
             ->get()
             ->row_array();
@@ -51,9 +54,10 @@ class Booking_model extends CI_Model
     {
         $offset = ($page - 1) * $per_page;
         return $this->db
-            ->select('b.*, r.room_number, r.type AS room_type, r.price_per_night')
+            ->select('b.*, r.room_number, rt.name AS room_type, rt.base_price AS price_per_night')
             ->from($this->table . ' b')
-            ->join('rooms r', 'r.id = b.room_id', 'left')
+            ->join('rooms r',      'r.id = b.room_id',       'left')
+            ->join('room_types rt','rt.id = r.room_type_id', 'left')
             ->where('b.user_id', $user_id)
             ->order_by('b.created_at', 'DESC')
             ->limit($per_page, $offset)
@@ -74,7 +78,7 @@ class Booking_model extends CI_Model
     }
 
     // -----------------------------------------------------------------------
-    // Stats (admin dashboard)
+    // Stats (admin dashboard) — PostgreSQL-compatible date functions
     // -----------------------------------------------------------------------
 
     public function stats(): array
@@ -85,18 +89,21 @@ class Booking_model extends CI_Model
             'confirmed' => $this->db->where('status', 'confirmed')->count_all_results($this->table),
             'pending'   => $this->db->where('status', 'pending')->count_all_results($this->table),
             'cancelled' => $this->db->where('status', 'cancelled')->count_all_results($this->table),
-            'today'     => $this->db->where('DATE(created_at)', $today)->count_all_results($this->table),
+            'today'     => $this->db
+                ->where("created_at::date = '{$today}'", NULL, FALSE)
+                ->count_all_results($this->table),
         ];
     }
 
     public function revenue(string $period = 'month'): float
     {
         $where = match($period) {
-            'today' => "DATE(check_in) = CURDATE()",
-            'week'  => "check_in >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)",
-            'year'  => "YEAR(check_in) = YEAR(CURDATE())",
-            default => "MONTH(check_in) = MONTH(CURDATE()) AND YEAR(check_in) = YEAR(CURDATE())",
+            'today' => "check_in::date = CURRENT_DATE",
+            'week'  => "check_in >= CURRENT_DATE - INTERVAL '7 days'",
+            'year'  => "EXTRACT(YEAR FROM check_in) = EXTRACT(YEAR FROM CURRENT_DATE)",
+            default => "DATE_TRUNC('month', check_in) = DATE_TRUNC('month', CURRENT_DATE)",
         };
+
         $row = $this->db
             ->select_sum('total_price', 'revenue')
             ->where('status', 'confirmed')
