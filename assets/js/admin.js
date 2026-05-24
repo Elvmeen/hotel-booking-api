@@ -44,7 +44,7 @@ document.addEventListener('keydown', (e) => {
    On first load, the token is absent — prompt admin to log in via API.
    ----------------------------------------------------------------------- */
 (function initAdminToken() {
-    if (!localStorage.getItem('admin_token')) {
+    if (!localStorage.getItem('admin_token') || localStorage.getItem('admin_token') === 'null') {
         const banner = document.createElement('div');
         banner.style.cssText = [
             'position:fixed;bottom:20px;right:20px;z-index:9999;',
