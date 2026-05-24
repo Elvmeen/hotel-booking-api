@@ -35,7 +35,6 @@ class Admin extends CI_Controller
 
         $user = $this->User_model->find_by_email(strtolower(trim($email)));
 
-        // find_by_email returns an object from the DB, cast to array for consistent access
         if (is_object($user)) {
             $user = (array) $user;
         }
@@ -45,7 +44,6 @@ class Admin extends CI_Controller
             redirect('admin/login');
         }
 
-        // FIXED: column is is_active (boolean), not status (string)
         if (empty($user['is_active'])) {
             $this->session->set_flashdata('error', 'Your account has been suspended.');
             redirect('admin/login');
@@ -58,23 +56,12 @@ class Admin extends CI_Controller
             'admin_role'  => $user['role'],
         ]);
 
-        // Fetch JWT token and store in session for API calls
-        $api_url = getenv('APP_URL') ?: 'https://hotel-booking-api-1-zmcs.onrender.com/';
-        $ch = curl_init(rtrim($api_url, '/') . '/api/v1/auth/login');
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_POST           => TRUE,
-            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
-            CURLOPT_POSTFIELDS     => json_encode(['email' => $email, 'password' => $password]),
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_TIMEOUT        => 10,
-        ]);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $parsed = json_decode($response, TRUE);
-        if (!empty($parsed['data']['token'])) {
-            $this->session->set_userdata('admin_jwt', $parsed['data']['token']);
+        // Generate JWT token directly without HTTP round-trip.
+        // Calling the public API URL from within the same Render service
+        // is unreliable due to internal routing on free tier instances.
+        $token = $this->User_model->generate_token($user['id']);
+        if ($token) {
+            $this->session->set_userdata('admin_jwt', $token);
         }
 
         redirect('admin/dashboard');
@@ -82,7 +69,7 @@ class Admin extends CI_Controller
 
     public function logout_action(): void
     {
-        $this->session->unset_userdata(['admin_id', 'admin_name', 'admin_email', 'admin_role']);
+        $this->session->unset_userdata(['admin_id', 'admin_name', 'admin_email', 'admin_role', 'admin_jwt']);
         $this->session->sess_destroy();
         redirect('admin/login');
     }
