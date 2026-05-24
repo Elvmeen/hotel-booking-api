@@ -18,7 +18,8 @@ class Admin extends CI_Controller
     public function login(): void
     {
         if ($this->_is_logged_in()) {
-            redirect('admin/dashboard');
+            //redirect('admin/dashboard');
+            var_dump($this->session->userdata('admin_jwt')); exit;
         }
         $this->load->view('admin/layout_auth', ['page' => 'admin/login', 'data' => []]);
     }
