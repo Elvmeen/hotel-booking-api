@@ -88,7 +88,7 @@
 async function updateStatus(id, newStatus) {
     if (!confirm('Set booking status to "' + newStatus + '"?')) return;
     const token = localStorage.getItem('admin_token');
-    const res = await fetch('/api/v1/bookings/' + id, {
+    const res = await fetch('/api/bookings/' + id, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ status: newStatus }),
