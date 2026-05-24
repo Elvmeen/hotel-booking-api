@@ -47,10 +47,10 @@ class User_model extends CI_Model
         return $row ?: null;
     }
 
-    public function find_by_email(string $email): ?array
+    public function find_by_id(int $id): ?array
     {
         $row = $this->db
-            ->where('email', $email)
+            ->where('id', $id)
             ->get($this->table)
             ->row_array();
         return $row ?: null;
@@ -93,14 +93,15 @@ class User_model extends CI_Model
     }
     public function generate_token(int $user_id): string
     {
-        $token   = bin2hex(random_bytes(32));
-        $expires = date('Y-m-d H:i:s', time() + 86400);
-        $this->db->where('id', $user_id);
-        $this->db->update($this->table, [
-            'api_token'        => $token,
-            'token_expires_at' => $expires,
-        ]);
-        return $token;
+        $this->load->helper('jwt');
+        $user   = $this->find_by_id($user_id);
+        $secret = $this->config->item('jwt_secret_key');
+        $expire = $this->config->item('jwt_expire') ?: 86400;
+        return jwt_encode([
+            'sub'  => $user['id'],
+            'role' => $user['role'],
+            'name' => $user['name'],
+        ], $secret, $expire);
     }
 
     public function email_exists(string $email, int $exclude_id = 0): bool
