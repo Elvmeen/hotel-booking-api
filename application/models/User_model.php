@@ -91,6 +91,17 @@ class User_model extends CI_Model
     {
         return password_verify($plain, $hash);
     }
+    public function generate_token(int $user_id): string
+    {
+        $token   = bin2hex(random_bytes(32));
+        $expires = date('Y-m-d H:i:s', time() + 86400);
+        $this->db->where('id', $user_id);
+        $this->db->update($this->table, [
+            'api_token'        => $token,
+            'token_expires_at' => $expires,
+        ]);
+        return $token;
+    }
 
     public function email_exists(string $email, int $exclude_id = 0): bool
     {
