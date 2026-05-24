@@ -1,33 +1,28 @@
-services:
-  - type: web
-    name: hotel-booking-api
-    runtime: docker
-    plan: free
-    port: 8080
-    healthCheckPath: /
-    envVars:
-      - key: CI_ENV
-        value: production
-      - key: DB_HOST
-        value: aws.connect.psdb.cloud
-      - key: DB_USER
-        sync: false
-      - key: DB_PASS
-        sync: false
-      - key: DB_NAME
-        value: hotel_booking
-      - key: JWT_SECRET
-        generateValue: true
-      - key: ENCRYPTION_KEY
-        generateValue: true
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-  - type: web
-    name: hotel-booking-frontend
-    env: node
-    plan: free
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://hotel-booking-api-1-zmcs.onrender.com
+$active_group = 'default';
+$query_builder = TRUE;
+
+$db['default'] = array(
+    'hostname'     => getenv('DB_HOST') ?: 'db.gjvrebzljhwaheydcbol.supabase.co',
+    'port'         => getenv('DB_PORT') ?: '5432',
+    'username'     => getenv('DB_USER') ?: 'postgres',
+    'password'     => getenv('DB_PASS') ?: '',
+    'database'     => getenv('DB_NAME') ?: 'postgres',
+    'dbdriver'     => 'postgre',
+    'dsn'          => '',
+    'dbprefix'     => '',
+    'pconnect'     => FALSE,
+    'db_debug'     => (ENVIRONMENT !== 'production'),
+    'cache_on'     => FALSE,
+    'cachedir'     => '',
+    'char_set'     => 'utf8',
+    'dbcollat'     => 'utf8_general_ci',
+    'swap_pre'     => '',
+    'encrypt'      => FALSE,
+    'compress'     => FALSE,
+    'stricton'     => FALSE,
+    'failover'     => array(),
+    'save_queries' => TRUE,
+);
