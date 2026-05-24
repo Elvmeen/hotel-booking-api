@@ -18,8 +18,7 @@ class Admin extends CI_Controller
     public function login(): void
     {
         if ($this->_is_logged_in()) {
-            //redirect('admin/dashboard');
-            var_dump($this->session->userdata('admin_jwt')); exit;
+            redirect('admin/dashboard');
         }
         $this->load->view('admin/layout_auth', ['page' => 'admin/login', 'data' => []]);
     }
@@ -61,7 +60,9 @@ class Admin extends CI_Controller
 
         // Generate token directly without HTTP round-trip
         $token = $this->User_model->generate_token($user['id']);
-        var_dump($token); exit;
+        if ($token) {
+            $this->session->set_userdata('admin_jwt', $token);
+        }
 
         redirect('admin/dashboard');
     }
