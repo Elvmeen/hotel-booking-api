@@ -14,6 +14,7 @@ class Base_api extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->database();
         $this->_handle_cors();
         $this->_set_json_headers();
     }

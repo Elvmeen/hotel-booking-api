@@ -44,6 +44,15 @@ $route['api/users/(:num)']['PATCH']  = 'api/users/update/$1';
 $route['api/users/(:num)']['DELETE'] = 'api/users/delete/$1';
 
 /* -------------------------------------------------------
+ | Customer Frontend
+ ------------------------------------------------------- */
+$route['rooms']              = 'frontend/rooms';
+$route['room/(:num)']        = 'frontend/room/$1';
+$route['login']              = 'frontend/login';
+$route['register']           = 'frontend/register';
+$route['dashboard']          = 'frontend/dashboard';
+
+/* -------------------------------------------------------
  | Admin Dashboard (Web Interface)
  ------------------------------------------------------- */
 $route['admin']                    = 'admin/dashboard';
