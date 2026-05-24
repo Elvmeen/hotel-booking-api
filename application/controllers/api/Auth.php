@@ -33,7 +33,7 @@ class Auth extends Base_api
             'email'    => strtolower(trim($data['email'])),
             'password' => $data['password'],
             'phone'    => $data['phone'] ?? null,
-            'role'     => 'guest',
+            'role'     => 'customer',
             'status'   => 'active',
         ]);
 
